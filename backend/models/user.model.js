@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -26,6 +25,12 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpiresAt: Date,
     verificationToken: String,
     verificationTokenExpiresAt: Date,
-}, { timestamps: true })
+    accountType: {
+        type: String,
+        enum: ['sailor', 'user'], // Allowed values
+        default: 'user', // Default account type
+        required: true
+    },
+}, { timestamps: true });
 
 export const User = mongoose.model("User", userSchema);
