@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import axios from 'axios'
 
+
 const API_URL = "http://localhost:5000/api/auth";
 axios.defaults.withCredentials = true;
 
@@ -73,6 +74,17 @@ export const useAuthStore = create((set) => ({
         } catch (error) {
             set({ error: null, isAuthenticated: false, isCheckingAuth: false })
         }
+    },
+    deleteAcc: async (email) => {
+        set({ isCheckingAuth: true, error: null });
+        try {
+            const response = await axios.delete(`${API_URL}/user/delete`, {
+                email: { email } // Correctly pass the email in the `data` field
+            });
+            set({ user: null, isCheckingAuth: false, isAuthenticated: false });
+        } catch (error) {
+            set({ error: error.response?.data?.message || 'An error occurred', isAuthenticated: false, isCheckingAuth: false });
+        }
     }
-
+    
 }))

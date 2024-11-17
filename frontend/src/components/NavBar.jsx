@@ -23,12 +23,16 @@ const NavBar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
-    const {isAuthenticated,logout} = useAuthStore();
+    const {isAuthenticated,logout,user,deleteAcc} = useAuthStore();
 
     const handleLogout = () =>{
         logout();
     }
     
+    const handleDelete = (user) =>{
+        deleteAcc(user.email);
+    }
+
     return <Container maxWidth={"1140px"}>
         <Flex
             h={16}
@@ -83,17 +87,24 @@ const NavBar = () => {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton />
-                <DrawerHeader>Create your account</DrawerHeader>
+                <DrawerHeader>
+                   {user ? <>{user.name}</>: <>login</>}
+                </DrawerHeader>
 
                 <DrawerBody>
 
                 </DrawerBody>
 
-                <DrawerFooter>
+                <DrawerFooter >
   {isAuthenticated ? (
+    <>
+    <Button colorScheme="red" onClick={handleDelete}>
+      Delete 
+    </Button>
     <Button colorScheme="red" onClick={handleLogout}>
       Logout
     </Button>
+    </>
   ) : (
     <>
       <Link to={"/register"}>
