@@ -42,7 +42,9 @@ export const sendVerificationEmail = async (email, verificationCode) => {
 export const sendWelcomeEmail = async (email, userName) => {
     try {
         const emailTemplate = readTemplate('welcomeEmail.html');
+        console.log("Template content read successfully:", emailTemplate);
         const htmlContent = emailTemplate.replace('{{userName}}', userName);
+        console.log("HTML content after replacement:", htmlContent);
         const subject = "Welcome to Our Platform";
         const text = `Welcome, ${userName}! Thank you for joining us.`;
         console.log(`Sending welcome email to: ${email}`);
