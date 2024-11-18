@@ -7,7 +7,7 @@ const RegisterPage = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [accountType, setAccountType] = useState("user"); // New state for account type
+    const [accountType, setAccountType] = useState(""); // New state for account type
     const { signup, error, isLoading } = useAuthStore();
     const navigate = useNavigate();
 

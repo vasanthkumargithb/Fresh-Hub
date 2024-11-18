@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     verificationTokenExpiresAt: Date,
     accountType: {
         type: String,
-        enum: ['sailor', 'user'], // Allowed values
+        enum: ['seller', 'user'], // Allowed values
         default: 'user', // Default account type
         required: true
     },
