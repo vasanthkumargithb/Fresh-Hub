@@ -7,7 +7,7 @@ const RegisterPage = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [accountType, setAccountType] = useState(""); // New state for account type
+    const [accountType, setAccountType] = useState("user"); // New state for account type
     const { signup, error, isLoading } = useAuthStore();
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const RegisterPage = () => {
                 w={"full"} bg={useColorModeValue("white", "gray.800")}
                 rounded={"lg"} p={6} shadow={"md"} mt={"20"}>
                 <VStack gap={3}>
-                    <Heading as={"h1"} mb={10}>Create an Account</Heading>
+                    <Heading as={"h1"} mb={10} className='text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text'>Create an Account</Heading>
 
                     <form onSubmit={handleSubmit}>
                         <Input
@@ -54,14 +54,14 @@ const RegisterPage = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             marginBottom={"15px"}
                         />
-                        
-                        <select 
-                            value={accountType} 
-                            onChange={(e) => setAccountType(e.target.value)} 
+
+                        <select
+                            value={accountType}
+                            onChange={(e) => setAccountType(e.target.value)}
                             style={{ marginBottom: '15px', padding: '8px', borderRadius: '4px' }}
                         >
                             <option value="user">User</option>
-                            <option value="sailor">Seller</option>
+                            <option value="seller">Seller</option>
                         </select>
 
                         {error && <p style={{ color: "red" }}> {error} </p>}

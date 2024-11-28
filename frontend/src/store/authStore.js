@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import axios from 'axios'
+import { FaSleigh } from 'react-icons/fa';
 
 
 const API_URL = "http://localhost:5000/api/auth";
@@ -23,7 +24,6 @@ export const useAuthStore = create((set) => ({
             throw error
         }
     },
-
     signin: async (email, password) => {
         set({ isLoading: true, error: null });
 
@@ -79,12 +79,29 @@ export const useAuthStore = create((set) => ({
         set({ isCheckingAuth: true, error: null });
         try {
             const response = await axios.delete(`${API_URL}/user/delete`, {
-                email: { email } // Correctly pass the email in the `data` field
+                data: { email }// Correctly pass the email in the `data` field
             });
             set({ user: null, isCheckingAuth: false, isAuthenticated: false });
         } catch (error) {
             set({ error: error.response?.data?.message || 'An error occurred', isAuthenticated: false, isCheckingAuth: false });
         }
+    },
+    forgotPassword: async(email) =>{
+        set({isCheckingAuth: true, error: null});
+        try {
+            const response = await axios.post(`${API_URL}/forgot-password`,{email});
+            set({user:null, isCheckingAuth:false,isAuthenticated: false})
+        } catch (error) {
+            set({error: error.response?.data?.message || "An error occurred during resetting password", isAuthenticated: false, isCheckingAuth:false});
+        }
+    },
+    resetPassword: async(email) =>{
+        set({isCheckingAuth: true, error: null});
+        try {
+            
+        } catch (error) {
+            
+        }
+                    
     }
-    
 }))

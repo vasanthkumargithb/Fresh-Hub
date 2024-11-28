@@ -52,7 +52,7 @@ const toast= useToast();
 
           <Input value={newProduct.image} placeholder='Enter image URL' name='image'
             onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })} />
-
+          
             <Button colorScheme='blue' onClick={handleAddProduct} w={"full"}>Add Product</Button>
         </VStack>
       </Box>

@@ -42,7 +42,7 @@ export const signup = async (req, res) => {
         await user.save();
 
         // Send verification email
-        await sendVerificationEmail(user.email, verificationToken);
+        await sendVerificationEmail(user.email, verificationToken,user.name);
 
         // Generate token and set cookie
         generateTokenAndSetCookie(res, user._id);
@@ -99,6 +99,7 @@ export const verifyEmail = async (req, res) => {
         });
 
         console.log("Email verified successfully!");
+       await sendWelcomeEmail(user.email,user.name);
     } catch (error) {
         console.error("Error in email verification:", error);
         res.status(500).json({
@@ -194,12 +195,13 @@ export const forgotPassword = async (req, res) => {
 
         // Send reset email
         const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-        await sendResetEmail(user.email, resetLink);
+        await sendResetEmail(user.email, user.name,resetLink);
 
         return res.status(200).json({
             success: true,
             message: "Password reset link sent successfully! Please check your email.",
         });
+        console.log("reset link sent to your email", email)
     } catch (error) {
         console.error("Error in forgotPassword:", error);
         res.status(500).json({ success: false, message: "Error in sending reset link." });
@@ -270,7 +272,7 @@ export const checkAuth = async (req, res) => {
 // Delete user API
 export const deleteUser = async (req, res) => {
     const { email } = req.body; // Get email from the request body
-
+    
     try {
         // Find the user by email
         const user = await User.findOne({ email });
@@ -284,7 +286,7 @@ export const deleteUser = async (req, res) => {
 
         // Delete the user
         await User.findOneAndDelete({ email });
-
+        console.log("user Deleted")
         // Send an email notification after deletion
         await sendDeleteEmail(user.email);
 
@@ -294,7 +296,6 @@ export const deleteUser = async (req, res) => {
             message: "User deleted successfully!"
         });
 
-        console.log("User deleted and deletion email sent!");
     } catch (error) {
         console.error("Error in deleting user:", error);
         res.status(500).json({

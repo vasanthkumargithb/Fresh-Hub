@@ -10,6 +10,9 @@ import EmailVerification from "./pages/EmailVerificationPage"
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import NavigationPage from "./pages/NavigationPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 //protected routes
 const ProtectedRoutes = ({ children }) => {
@@ -42,8 +45,6 @@ function App() {
     checkAuth();
   }, [checkAuth])
 
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("user", user);
 
   return (
     <Box minH={"100vh"} bg={useColorModeValue("red.100", "gray.900")} >
@@ -62,6 +63,9 @@ function App() {
           <RegisterPage />
         </RedirectAuthenticatedUser>} />
         <Route path="/verify-email" element={<EmailVerification />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/nav" element={<NavigationPage/>}/> 
+        <Route path="/reset-password" element={<ResetPasswordPage/>}/>
       </Routes>
       <Toaster />
     </Box>

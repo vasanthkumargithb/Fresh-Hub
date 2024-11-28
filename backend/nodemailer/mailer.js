@@ -1,38 +1,47 @@
 import nodemailer from 'nodemailer';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-// Create a transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Gmail service
+    service: 'gmail',
     auth: {
-        user: "sktigpta@gmail.com",  // Sender's email
-        pass: "weji rafh tnkg xhlj",  // App password
+        user: "alakjarasatyam@gmail.com",
+        pass: "pziq mxia ewot mzvp" ,
     },
-    tls: {
-        rejectUnauthorized: false, // Avoid unauthorized errors
-    },
-    // Explicitly set the port and secure settings for Gmail
-    port: 587,  // SMTP port for Gmail
-    secure: false,  // Use TLS
+    port: 465,
+    secure: true,
 });
 
-// Send mail function
+
 export const sendMail = async (to, subject, text, html) => {
     try {
+        if (!to || !subject || (!text && !html)) {
+            throw new Error('Missing required email fields.');
+        }
+  
         const mailOptions = {
-            from: process.env.EMAIL_USER,  // Sender's email
-            to: to,  // Recipient's email
-            subject: subject,
-            text: text,  // Plain text version
-            html: html,  // HTML version
+            from: "alakjarasatyam@gmail.com",
+            to,
+            subject,
+            text,
+            html,
         };
 
-        // Send the email
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.response);
+        transporter.verify((error, success) => {
+            if (error) {
+                console.error('Transporter verification failed:', error);
+            } else {
+                console.log('Transporter verified successfully:', success);
+            }
+        });
+        
+        console.log('Email sent successfully!');
+        // console.log('Message ID:', info.messageId);
+        // console.log('Accepted:', info.accepted);
         return info;
     } catch (error) {
         console.error('Error sending email:', error);
-        console.error('Detailed Error:', error.stack);  // More detailed error logging
-        throw error;  // Rethrow the error
+        throw error;
     }
 };

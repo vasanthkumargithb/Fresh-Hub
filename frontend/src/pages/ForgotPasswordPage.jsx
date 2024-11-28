@@ -18,6 +18,7 @@ const ForgotPasswordPage = () => {
 	};
 
 	return (
+		<div style={{width:"100%",display:"flex",justifyContent:"center",alignItems:"center",height:"90vh"}}>
 		<motion.div
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
@@ -74,6 +75,7 @@ const ForgotPasswordPage = () => {
 				</Link>
 			</div>
 		</motion.div>
+		</div>
 	);
 };
 export default ForgotPasswordPage;
