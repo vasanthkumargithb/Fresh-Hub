@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input, Heading, HStack, VStack, Box, Container, useColorModeValue } from '@chakra-ui/react';
+import { motion } from "framer-motion"
 import { useAuthStore } from '../store/authStore';
+import { Loader } from 'lucide-react';
 
 const RegisterPage = () => {
     const [name, setName] = useState("");
@@ -65,14 +67,21 @@ const RegisterPage = () => {
                         </select>
 
                         {error && <p style={{ color: "red" }}> {error} </p>}
-                        <HStack display={"Flex"} flexDir={"column"}>
-                            <Button type='submit'>{isLoading ? "Loading..." : "Register"}</Button>
+                        <motion.button
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
+							className='w-full my-3 py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
+							type='submit'
+                           
+						>
+							{isLoading ? <Loader className='size-6 animate-spin mx-auto' /> : "Register"}
+						</motion.button>
                             <div>Already have an account?
                                 <Link to={"/login"} style={{ color: "gray" }}>
                                     &nbsp;Login
                                 </Link>
                             </div>
-                        </HStack>
+                      
                     </form>
                 </VStack>
             </Box>

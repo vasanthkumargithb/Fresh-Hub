@@ -192,9 +192,9 @@ export const forgotPassword = async (req, res) => {
         user.resetPasswordToken = resetToken;
         user.resetPasswordExpiresAt = resetTokenExpiresAt;
         await user.save();
-
         // Send reset email
-        const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+        const resetLink = `${process.env.CLIENT_URL}reset-password/${resetToken}`;
+       
         await sendResetEmail(user.email, user.name,resetLink);
 
         return res.status(200).json({
@@ -207,6 +207,8 @@ export const forgotPassword = async (req, res) => {
         res.status(500).json({ success: false, message: "Error in sending reset link." });
     }
 };
+
+
 //this function resets password and save it to database
 export const resetPassword = async (req, res) => {
     const { token } = req.params; // Token passed as part of URL
@@ -215,7 +217,7 @@ export const resetPassword = async (req, res) => {
     try {
         const user = await User.findOne({
             resetPasswordToken: token,
-            resetPasswordExpiresAt: { $gt: Date.now() }, // Ensure token is valid and not expired
+            resetPasswordExpiresAt: { $gt: Date.now() }, 
         });
 
         if (!user) {
@@ -233,7 +235,6 @@ export const resetPassword = async (req, res) => {
 
         // Send success email
         await sendResetSuccessEmail(user.email);
-
         res.status(200).json({ success: true, message: "Password reset successful!" });
     } catch (error) {
         console.error("Error in resetPassword:", error);

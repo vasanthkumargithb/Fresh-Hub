@@ -2,8 +2,8 @@ import { Container, Heading, VStack, Input, Button, HStack, Box, Text, useColorM
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
-import axios from 'axios'
 import { useAuthStore } from '../store/authStore'
+import { Loader } from 'lucide-react'
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -61,25 +61,32 @@ const LoginPage = () => {
                             onChange={handleChange}
                             marginBottom={"15px"}
                         />
+                        {error && <p style={{ color: "red" }}>{error}</p>}
+
+                        <motion.button
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
+							className='w-full my-5 py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
+							type='submit'
+						>
+							{isLoading ? <Loader className='size-6 animate-spin mx-auto' /> : "Login"}
+						</motion.button>
                         <Link to={"/forgot-password"} >
                             <Text color={useColorModeValue("#6C757D", "#8A8A8A")}
                                 _hover={{
                                     color: useColorModeValue("#0056D2", "#66B2FF"),
                                     textDecoration: "underline",
                                 }} >
-                                Forgot Password
+                                Forgot Password?
                             </Text>
                         </Link>
-                        {error && <p style={{ color: "red" }}>{error}</p>}
-                        <HStack display={"flex"} flexDir={"column"}>
-                            <Button type='submit' >{isLoading ? "Loading..." : "Login"}</Button>
+
                             <div>
                                 Don't have an account?
                                 <Link to={"/register"} style={{ color: "gray" }} >
                                     &nbsp; Register
                                 </Link>
                             </div>
-                        </HStack>
                     </form>
                 </VStack>
             </Box>

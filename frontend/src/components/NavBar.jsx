@@ -1,4 +1,4 @@
-import { Container, Flex, HStack, Text, Button, useColorMode, useColorModeValue } from '@chakra-ui/react'
+import { Container, Flex, HStack, Text, Button, useColorMode, useColorModeValue,Box, flexbox } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { PlusSquareIcon } from "@chakra-ui/icons"
@@ -47,7 +47,6 @@ const NavBar = () => {
         }
       }>
       <Text
-        // className='font-extrabold text-white'
         fontSize={{ base: "22", sm: "28" }}
         fontWeight={"bold"}
         textTransform={"uppercase"}
@@ -103,7 +102,7 @@ const NavBar = () => {
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>
-          {user ? <>{user.name}</> : <>login</>}
+          {user ? <>{user.name}</> : <>Login</>}
         </DrawerHeader>
 
         <DrawerBody>
@@ -112,15 +111,15 @@ const NavBar = () => {
 
         <DrawerFooter >
           {isAuthenticated ? (
-            <>
-              <Button colorScheme="red" onClick={handleDelete}>
+            <Box >
+              <Button colorScheme="red" onClick={handleDelete} marginRight={10} >
                 Delete
               </Button>
 
               <Button colorScheme="red" onClick={handleLogout}>
                 Logout
               </Button>
-            </>
+            </Box>
           ) : (
             <>
               <Link to={"/register"}>
@@ -129,7 +128,7 @@ const NavBar = () => {
                 </Button>
               </Link>
               <Link to={"/login"}>
-                <Button colorScheme="blue" onClick={onClose}>
+                <Button colorScheme="blue" onClick={onClose} className="bg-gradient-to-r from-green-500 to-emerald-600 text-white" >
                   Login
                 </Button>
               </Link>

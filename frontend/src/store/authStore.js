@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import axios from 'axios'
-import { FaSleigh } from 'react-icons/fa';
 
 
 const API_URL = "http://localhost:5000/api/auth";
@@ -12,6 +11,7 @@ export const useAuthStore = create((set) => ({
     error: null,
     isLoading: false,
     isCheckingAuth: true,
+    message:null,
 
     signup: async (email, password, name ,accountType) => {
         set({ isLoading: true, error: null });
@@ -95,13 +95,18 @@ export const useAuthStore = create((set) => ({
             set({error: error.response?.data?.message || "An error occurred during resetting password", isAuthenticated: false, isCheckingAuth:false});
         }
     },
-    resetPassword: async(email) =>{
-        set({isCheckingAuth: true, error: null});
-        try {
-            
-        } catch (error) {
-            
-        }
-                    
+    resetPassword: async(password,token) =>{
+        set({ isLoading: true, error: null });
+		try {
+			const response = await axios.post(`${API_URL}/reset-password/${token}`,  password );
+			set({ message: response.data.message, isLoading: false });
+		} catch (error) {
+			set({
+				isLoading: false,
+				error: error.response.data.message || "Error resetting password",
+			}); 
+			throw error;
+		}
     }
+
 }))

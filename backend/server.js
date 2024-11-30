@@ -2,6 +2,7 @@ import express from "express"
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 import ProductRoutes from "./routes/products.route.js"
+import CartRoutes from "./routes/cart.route.js"
 import cookieParser from "cookie-parser";
 // import path from "path";
 import AuthRoutes from "./routes/auth.route.js"
@@ -20,7 +21,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use("/api/auth",AuthRoutes)
 app.use("/api/products",ProductRoutes); //allows json data in  the req.body
-
+app.use("/cart",CartRoutes)
 // if(process.env.NODE_ENV =="production"){
 //     app.use(express.static(path.join(__dirname,"/frontend/dist")));
 

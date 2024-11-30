@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NavigationPage from "./pages/NavigationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import CartPage from "./pages/CartPage";
 
 //protected routes
 const ProtectedRoutes = ({ children }) => {
@@ -65,7 +66,15 @@ function App() {
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/nav" element={<NavigationPage/>}/> 
-        <Route path="/reset-password" element={<ResetPasswordPage/>}/>
+        <Route
+					path='/reset-password/:token'
+					element={
+						<RedirectAuthenticatedUser>
+							<ResetPasswordPage />
+						 </RedirectAuthenticatedUser>
+					}
+				/>
+        <Route path="/cart" element={<CartPage/>}></Route>
       </Routes>
       <Toaster />
     </Box>
