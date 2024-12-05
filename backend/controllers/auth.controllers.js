@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookies.js";
 
-import { sendVerificationEmail, sendWelcomeEmail, sendOTPEmail, sendResetEmail, sendResetSuccessEmail,sendDeleteEmail } from '../nodemailer/sendEmail.js';
+import { sendVerificationEmail, sendWelcomeEmail, sendOTPEmail, sendResetEmail, sendResetSuccessEmail, sendDeleteEmail } from '../nodemailer/sendEmail.js';
 
 // Signup Api
 
@@ -11,13 +11,13 @@ export const signup = async (req, res) => {
     const { name, email, password, accountType } = req.body;
 
     try {
-        // Validate required fields
         if (!email || !password || !name || !accountType) {
             throw new Error("All fields are required!");
         }
 
         // Check if the user already exists
         const userAlreadyExist = await User.findOne({ email });
+
         if (userAlreadyExist) {
             return res.status(409).json({ success: false, message: "User already exists!" });
         }
@@ -25,23 +25,22 @@ export const signup = async (req, res) => {
         // Hash the password
         const hashPassword = await bcrypt.hash(password, 10);
 
-        // Generate verification token
+        //verification token
         const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
 
-        // Create a new user
+        // Create
         const user = new User({
             email,
             password: hashPassword,
             name,
-            accountType, // Set the account type
+            accountType, 
             verificationToken,
             verificationTokenExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours expiration
         });
 
-        // Save the user to the database
+        // Save the user to db
         await user.save();
 
-        // Send verification email
         await sendVerificationEmail(user.email, verificationToken,user.name);
 
         // Generate token and set cookie
@@ -53,7 +52,7 @@ export const signup = async (req, res) => {
             message: "User created successfully! Please verify your email.",
             user: {
                 ...user._doc,
-                password: undefined, // Exclude the password from the response
+                password: undefined, 
             },
         });
         console.log("User registered and verification email sent!");
@@ -62,7 +61,7 @@ export const signup = async (req, res) => {
         res.status(400).json({ success: false, message: "Error in creating user!" });
     }
 };
-
+//signup route revision
 
 //verifying email through verification code 
 export const verifyEmail = async (req, res) => {
@@ -99,7 +98,7 @@ export const verifyEmail = async (req, res) => {
         });
 
         console.log("Email verified successfully!");
-       await sendWelcomeEmail(user.email,user.name);
+        await sendWelcomeEmail(user.email, user.name);
     } catch (error) {
         console.error("Error in email verification:", error);
         res.status(500).json({
@@ -194,8 +193,8 @@ export const forgotPassword = async (req, res) => {
         await user.save();
         // Send reset email
         const resetLink = `${process.env.CLIENT_URL}reset-password/${resetToken}`;
-       
-        await sendResetEmail(user.email, user.name,resetLink);
+
+        await sendResetEmail(user.email, user.name, resetLink);
 
         return res.status(200).json({
             success: true,
@@ -217,7 +216,7 @@ export const resetPassword = async (req, res) => {
     try {
         const user = await User.findOne({
             resetPasswordToken: token,
-            resetPasswordExpiresAt: { $gt: Date.now() }, 
+            resetPasswordExpiresAt: { $gt: Date.now() },
         });
 
         if (!user) {
@@ -273,7 +272,7 @@ export const checkAuth = async (req, res) => {
 // Delete user API
 export const deleteUser = async (req, res) => {
     const { email } = req.body; // Get email from the request body
-    
+
     try {
         // Find the user by email
         const user = await User.findOne({ email });

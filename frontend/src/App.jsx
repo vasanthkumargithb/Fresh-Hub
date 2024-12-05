@@ -13,8 +13,8 @@ import { useEffect } from "react";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import NavigationPage from "./pages/NavigationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
-import CartPage from "./pages/CartPage";
-
+import MyCart from "./components/MyCart"
+import BillingAddress from "./components/BillingAddress";
 //protected routes
 const ProtectedRoutes = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -74,7 +74,8 @@ function App() {
 						 </RedirectAuthenticatedUser>
 					}
 				/>
-        <Route path="/cart" element={<CartPage/>}></Route>
+        <Route path="/cart" element={<MyCart/>}></Route>
+        <Route path="/billing" element={<BillingAddress/>}/>
       </Routes>
       <Toaster />
     </Box>

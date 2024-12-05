@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons"
 import { FaCartPlus } from "react-icons/fa";
 import { useProductStore } from '../store/product';
-import { useToast } from '@chakra-ui/react'
+import { Flex, useToast } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
 import { useAuthStore } from '../store/authStore';
-
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
     Box,
     Heading,
@@ -23,18 +23,24 @@ import {
     ModalFooter
 } from '@chakra-ui/react'
 
+import { useCartStore } from '../store/cart';
+
 
 const ProductCart = ({ product }) => {
     const textColor = useColorModeValue("gray.600", "gray.200");
     const bg = useColorModeValue("white", "gray.800");
-
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { deleteProducts, updateProducts } = useProductStore();
-    const toast = useToast();
-    //  console.log(product)
+     const toast = useToast();
+    const navigate = useNavigate();
+    //states of this component
+    const [quantity, setquantity] = useState(1)
     const [updatedProduct, setUpdatedProduct] = useState(product);
-    const {user} =useAuthStore();
+    const { user } = useAuthStore();
+    const{addToCart,error} = useCartStore();
 
+
+    //event handler of this function
     const handleUpdateProduct = async (pid, updatedProduct) => {
         const { success, message } = await updateProducts(pid, updatedProduct);
         onClose();
@@ -80,9 +86,54 @@ const ProductCart = ({ product }) => {
         }
     }
 
-    const handleAddtoCart = async (pid) =>{
 
+    //add to cart handler
+    const handleAddtoCart = async (pid) => {
+
+        if (quantity <= 0) {
+            return toast({
+                title: "Invalid Quantity",
+                description: "Please select a valid quantity",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+
+       const {success,message} = await addToCart(user._id,pid, quantity,product.price,product.image);
+       if(success){
+        toast({
+            title: "Product Added to Cart",
+            description: message,
+            status: "success",
+            duration: 3000,
+            isClosable: true
+            })
+       }
+       else{
+        toast({
+            title: error,
+            description:message,
+            status: "error",
+            duration: 3000,
+            isClosable: true
+        })
+       }
+      };
+      
+
+    const handleMinus = () => {
+        setquantity(quantity > 0 ? quantity - 1 : 0);
+    };
+
+    const handlePlus = () => {
+        setquantity(quantity + 1);
+    };
+
+    const handleBuy = () =>{
+        navigate("/billing")
     }
+
     return <Box
         shadow="lg"
         rounded="lg"
@@ -105,11 +156,31 @@ const ProductCart = ({ product }) => {
                 <IconButton icon={<EditIcon />} onClick={onOpen} colorScheme='blue' />
                 <IconButton icon={<DeleteIcon />} onClick={() => handleDeleteProduct(product._id)} colorScheme='red' />
             </HStack>
-            <>
-            </>
+                <>
+                </>
             </> : <>
-            <Button style={{marginRight:"10px"}}>Buy Now</Button>
-            <IconButton icon={<FaCartPlus />} onClick={() => handleAddtoCart(product._id)} colorScheme='red' />
+                <Button style={{ marginRight: "10px" }} onClick={handleBuy}>Buy Now</Button>
+                <IconButton icon={<FaCartPlus />} onClick={() => handleAddtoCart(product._id)} colorScheme='red' />
+
+                <Box display={"Flex"} marginTop={"5px"}>
+                    <Button onClick={handleMinus} fontWeight={"800"} >-</Button>
+                    <Input
+                        value={quantity}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*\.?\d*$/.test(value)) {
+                                setquantity(value); // Keep as a string to allow intermediate values like "10."
+                            }
+                        }}
+                        onBlur={() => setquantity(parseFloat(quantity) || 0)} // Convert to number on blur
+                        w="80px"
+                        textAlign="center"
+                    />
+
+                    <Button onClick={handlePlus} fontWeight={"800"}>+</Button>
+                </Box>
+
+
             </>}
         </Box>
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -145,3 +216,60 @@ const ProductCart = ({ product }) => {
 }
 
 export default ProductCart
+
+
+// const handleAddtoCart = async (pid) => {
+//     if (quantity <= 0) {
+//         return toast({
+//           title: "Invalid Quantity",
+//           description: "Please select a valid quantity",
+//           status: "error",
+//           duration: 3000,
+//           isClosable: true
+//         });
+//       }
+//     try {
+//       const response = await fetch('http://localhost:5000/api/cart/add', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//           userId: user._id, // Assuming `user` contains the logged-in user's ID
+//           productId: pid,
+//           quantity,
+//           price: product.price
+//         }),
+//         credentials: 'include', 
+//       });
+  
+//       const result = await response.json();
+//   console.log("result is: ",result)
+//       if (result.success) {
+//         toast({
+//           title: "Added to Cart!",
+//           description: result.message,
+//           status: "success",
+//           duration: 3000,
+//           isClosable: true
+//         });
+//       } else {
+//         toast({
+//           title: "Error",
+//           description: result.message,
+//           status: "error",
+//           duration: 3000,
+//           isClosable: true
+//         });
+//       }
+//     } catch (error) {
+//       console.error("Error adding product to cart:", error);
+//       toast({
+//         title: "Error",
+//         description: "Failed to add product to cart",
+//         status: "error",
+//         duration: 3000,
+//         isClosable: true
+//       });
+//     }
+//   };

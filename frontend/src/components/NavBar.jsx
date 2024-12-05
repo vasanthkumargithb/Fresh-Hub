@@ -18,6 +18,7 @@ import {
   useDisclosure,
   Input
 } from '@chakra-ui/react'
+import { useCartStore } from '../store/cart';
 
 
 const NavBar = () => {
@@ -26,7 +27,8 @@ const NavBar = () => {
 
   const btnRef = React.useRef()
   const { isAuthenticated, logout, user, deleteAcc } = useAuthStore();
-
+  const {cart} = useCartStore();
+  
   const handleLogout = () => {
     logout();
   }
@@ -63,7 +65,7 @@ const NavBar = () => {
             <Link to={"/cart"}>
               <Button>
                 <FaCartPlus fontSize={20} />
-                <span style={{ position: "relative", top: "-10px" }}>3</span>
+                <span style={{ position: "relative", top: "-10px" }}></span>
               </Button>
             </Link>
           ) : (

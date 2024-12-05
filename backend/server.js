@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use("/api/auth",AuthRoutes)
 app.use("/api/products",ProductRoutes); //allows json data in  the req.body
-app.use("/cart",CartRoutes)
+app.use("/api/cart",CartRoutes)
 // if(process.env.NODE_ENV =="production"){
 //     app.use(express.static(path.join(__dirname,"/frontend/dist")));
 
