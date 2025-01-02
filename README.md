@@ -10,11 +10,11 @@ A fullstack MERN project for farmers . Basically it is a type of e-commerce webs
 -  CRUD operations
 
 ---
-
+---
 ## Folder Structure
-
+---
 root ├── frontend/ # Frontend React application 
-     ├── backend/ # Backend Node.js application └── README.md # Project documentation
+-  ├── backend/ # Backend Node.js application └── README.md # Project documentation
 
 
 ---
