@@ -1,6 +1,6 @@
 # MERN Project: Farm floo
 
-A full-stack MERN application that includes a separate client and server setup. This project demonstrates a structured approach to building robust web applications.
+A fullstack MERN project for farmers . Basically it is a type of e-commerce website .
 
 ---
 
@@ -13,8 +13,8 @@ A full-stack MERN application that includes a separate client and server setup. 
 
 ## Folder Structure
 
-root ├── client/ # Frontend React application 
-     ├── server/ # Backend Node.js application └── README.md # Project documentation
+root ├── frontend/ # Frontend React application 
+     ├── backend/ # Backend Node.js application └── README.md # Project documentation
 
 
 ---
