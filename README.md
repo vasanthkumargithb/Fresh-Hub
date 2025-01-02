@@ -9,8 +9,7 @@ A fullstack MERN project for farmers . Basically it is a type of e-commerce webs
 -  user authentication
 -  CRUD operations
 
----
----
+
 ## Folder Structure
 ---
 root ├── frontend/ # Frontend React application 
