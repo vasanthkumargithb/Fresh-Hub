@@ -55,6 +55,9 @@ npm install
 PORT=5000
 MONGO_URI=your_mongo_connection_string
 JWT_SECRET=your_secret_key
+MAILTRAP_TOKEN=Your_mailtrap_token
+CLIENT_URL=http://localhost:5173/
+EMAIL_PASS=sixteen digit password
 ```
 
 ### 4. Start the Server
