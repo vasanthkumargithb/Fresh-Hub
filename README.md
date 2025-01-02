@@ -58,10 +58,10 @@ JWT_SECRET=your_secret_key
 ```
 
 ### 4. Start the Server
- #### for frontend go to client directory and then
+- for frontend go to client directory and then
 npm run dev
 
-#### for backend go to root directory and then
+- for backend go to root directory and then
 nodemon
 
 
