@@ -51,10 +51,11 @@ npm install
 ```
 
 ### 3. Environment Variables
+```
 PORT=5000
 MONGO_URI=your_mongo_connection_string
 JWT_SECRET=your_secret_key
-
+```
 
 ### 4. Start the Server
  #### for frontend go to client directory and then
