@@ -35,7 +35,7 @@ Ensure you have the following installed:
 
 ### 2. Clone the Repository
 ```bash
-git clone https://github.com/satyam0827/Farm-flo.git
+git clone <forked repository URL>
 cd Farm-flo
 ```
 
