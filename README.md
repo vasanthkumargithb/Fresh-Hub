@@ -72,9 +72,7 @@ npm run dev
 nodemon
 ```
 
-#### If you still face difficulties in installation directly contact on my number
-  ```
-  7484965040
-  ```
+#### If you still face difficulties in installation let me know
+  
 
 
