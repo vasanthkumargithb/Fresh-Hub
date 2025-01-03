@@ -28,15 +28,18 @@ Ensure you have the following installed:
 
 ---
 
+##  fork the repository 
+-- use fork option 
+
 ## Installation
 
-### 1. Clone the Repository
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/satyam0827/Farm-flo.git
 cd Farm-flo
 ```
 
-### 2. Install Dependencies
+### 3. Install Dependencies
 
 #### backend
 ```bash
@@ -49,7 +52,7 @@ cd frontend
 npm install
 ```
 
-### 3. Environment Variables
+### 4. Environment Variables
 ```
 MONGO_URI= Your_Mongodb_URI
 PORT=5000
@@ -59,7 +62,7 @@ CLIENT_URL=http://localhost:5173/
 EMAIL_PASS=sixteen digit password
 ```
 
-### 4. Start the Server
+### 5. Start the Server
 - for frontend go to client directory and then
 ```bash
 npm run dev
@@ -68,5 +71,10 @@ npm run dev
 ```bash
 nodemon
 ```
+
+#### If you still face difficulties in installation directly contact on my number
+  ```
+  7484965040
+  ```
 
 
