@@ -1,4 +1,4 @@
-# MERN Project: Farm floo
+# MERN Project: Farm-flo
 
 A fullstack MERN project for farmers . Basically it is a type of e-commerce website .
 
