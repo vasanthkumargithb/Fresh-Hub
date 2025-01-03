@@ -52,7 +52,7 @@ cd frontend
 npm install
 ```
 
-### 4. Environment Variables
+### 4. Environment Variables (.env file)
 ```
 MONGO_URI= Your_Mongodb_URI
 PORT=5000
