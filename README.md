@@ -29,7 +29,8 @@ Ensure you have the following installed:
 ---
 
 ##  fork the repository 
--- use fork option 
+- star the repository
+- use fork option 
 
 ## Installation
 
