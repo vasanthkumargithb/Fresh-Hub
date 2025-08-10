@@ -137,6 +137,8 @@ export const signin = async (req, res) => {
             }
         })
         console.log("singed in!")
+        console.log(user.name);
+        console.log(user.email);
     } catch (error) {
         console.log("error in login!", error)
         res.status(400).json({ success: false, message: "error in singing you inn!" })

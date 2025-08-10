@@ -1,0 +1,171 @@
+/* ProductImageUpload.css */
+.image-upload-container {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.upload-area {
+  border: 2px dashed #4a5568;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.upload-area:hover,
+.upload-area.drag-active {
+  border-color: #38d9a9;
+  background: rgba(56, 217, 169, 0.1);
+}
+
+.upload-content {
+  pointer-events: none;
+}
+
+.upload-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.upload-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 8px;
+}
+
+.upload-subtext {
+  font-size: 14px;
+  color: #a0aec0;
+  margin: 0;
+}
+
+.selected-files {
+  margin-top: 24px;
+}
+
+.selected-files h4 {
+  color: #e2e8f0;
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.file-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.file-preview {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.file-info {
+  text-align: left;
+}
+
+.file-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e2e8f0;
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  font-size: 12px;
+  color: #a0aec0;
+  margin: 0;
+}
+
+.remove-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.remove-button:hover {
+  background: rgb(239, 68, 68);
+}
+
+/* Light theme adjustments - if your project uses light theme */
+.light-theme .upload-area {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: #cbd5e0;
+}
+
+.light-theme .upload-text {
+  color: #2d3748;
+}
+
+.light-theme .upload-subtext {
+  color: #718096;
+}
+
+.light-theme .selected-files h4 {
+  color: #2d3748;
+}
+
+.light-theme .file-preview {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .file-name {
+  color: #2d3748;
+}
+
+.light-theme .file-size {
+  color: #718096;
+}
+
+@media (max-width: 768px) {
+  .upload-area {
+    padding: 24px 16px;
+  }
+  
+  .file-previews {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  
+  .preview-image {
+    height: 100px;
+  }
+  
+  .upload-icon {
+    font-size: 36px;
+  }
+  
+  .upload-text {
+    font-size: 16px;
+  }
+}

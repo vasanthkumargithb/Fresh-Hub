@@ -15,6 +15,15 @@ import NavigationPage from "./pages/NavigationPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import MyCart from "./components/MyCart"
 import BillingAddress from "./components/BillingAddress";
+import AboutUs from "./pages/Aboutus";
+import ContactUs from "./pages/Contactus";
+import Home from "./pages/Home";
+import Feedback from "./pages/Feedback";
+import ProductFeedback from "./pages/ProductFeedback";
+import Footer from "./pages/Footer"
+import ShowOrders from "./pages/ShowOrders";
+
+import Prediction from "./pages/Prediction"
 //protected routes
 const ProtectedRoutes = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -64,6 +73,8 @@ function App() {
           <RegisterPage />
         </RedirectAuthenticatedUser>} />
         <Route path="/verify-email" element={<EmailVerification />} />
+        <Route path="/my-orders" element={<ProtectedRoutes><ShowOrders /></ProtectedRoutes>} />
+
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/nav" element={<NavigationPage/>}/> 
         <Route
@@ -75,9 +86,16 @@ function App() {
 					}
 				/>
         <Route path="/cart" element={<MyCart/>}></Route>
+        <Route path="/about" element={<AboutUs/>}></Route>
+        <Route path="/contact" element={<ContactUs/>}></Route>
+        <Route path="/home" element={<Home/>}></Route>
+        <Route path="/pred" element={<Prediction/>}></Route>
+        <Route path="/feed" element={<Feedback/>}></Route>
+        <Route path="/pfeed" element={<ProductFeedback/>}></Route>
         <Route path="/billing" element={<BillingAddress/>}/>
       </Routes>
       <Toaster />
+      <Footer/>
     </Box>
   )
 }

@@ -36,11 +36,7 @@ const HomePage = () => {
 
       {products.length === 0 && (<Text fontSize={"xl"} textAlign={"center"} fontWeight={"bold"} color={"gray.500"}>
         No Products Listed! {" "}
-        <Link to={"/create"}>
-          <Text as='span' color={"blue.500"} fontWeight={"bold"} _hover={{ textDecoration: "underline" }}>
-            Create new Product
-          </Text>
-        </Link>
+
       </Text>)}
 
 

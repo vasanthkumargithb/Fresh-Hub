@@ -1,47 +1,33 @@
 import nodemailer from 'nodemailer';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: "alakjarasatyam@gmail.com",
-        pass: "pziq mxia ewot mzvp" ,
-    },
-    port: 465,
-    secure: true,
+        user: 'lpcxxsimulators@gmail.com',
+        pass: 'cppdqbpheuvshopf'
+        },
 });
 
-
 export const sendMail = async (to, subject, text, html) => {
-    try {
-        if (!to || !subject || (!text && !html)) {
-            throw new Error('Missing required email fields.');
-        }
-  
+    try { 
+    console.log(to,subject,text,html);
         const mailOptions = {
-            from: "alakjarasatyam@gmail.com",
-            to,
-            subject,
-            text,
-            html,
+            from: '"Fresh-Hub" <noreply@freshhub.com>',
+            to: to,
+            subject: subject,
+            text: text,
+            html: html,
         };
 
+        console.log(mailOptions);
+
         const info = await transporter.sendMail(mailOptions);
-        transporter.verify((error, success) => {
-            if (error) {
-                console.error('Transporter verification failed:', error);
-            } else {
-                console.log('Transporter verified successfully:', success);
-            }
-        });
-        
-        console.log('Email sent successfully!');
-        // console.log('Message ID:', info.messageId);
-        // console.log('Accepted:', info.accepted);
+        console.log("✅ Email sent:", info.messageId);
         return info;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error("❌ Error sending email:", error);
         throw error;
     }
 };

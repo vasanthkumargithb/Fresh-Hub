@@ -1,13 +1,11 @@
-import { Container, Flex, HStack, Text, Button, useColorMode, useColorModeValue,Box, flexbox } from '@chakra-ui/react'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { PlusSquareIcon } from "@chakra-ui/icons"
-import { IoMoon } from "react-icons/io5";
-import { LuSun } from "react-icons/lu";
-import { FaCartPlus } from "react-icons/fa";
-import { RiAccountCircleLine } from "react-icons/ri";
-import { useAuthStore } from '../store/authStore';
 import {
+  Container,
+  Flex,
+  HStack,
+  Text,
+  Button,
+  useColorMode,
+  Box,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -16,133 +14,264 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Input
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { PlusSquareIcon } from "@chakra-ui/icons";
+import { IoMoon } from "react-icons/io5";
+import { LuSun } from "react-icons/lu";
+import { FaCartPlus } from "react-icons/fa";
+import { RiAccountCircleLine } from "react-icons/ri";
+import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cart';
-
 
 const NavBar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const btnRef = React.useRef()
+  const btnRef = React.useRef();
   const { isAuthenticated, logout, user, deleteAcc } = useAuthStore();
-  const {cart} = useCartStore();
-  
+  const { cart } = useCartStore();
+
   const handleLogout = () => {
     logout();
-  }
+  };
+
   const handleDelete = (event) => {
     event.preventDefault();
     deleteAcc(user.email);
-  }
+  };
 
-  return <Container maxWidth={"1140px"}>
-    <Flex
-      h={16}
-      alignItems={"center"}
-      justifyContent={"space-between"}
-      flexDir={
-        {
+  // Common hover styles for buttons
+  const hoverStyles = {
+    bg: "cyan.500",
+    color: "white",
+    transform: "scale(1.05)",
+  };
+
+  return (
+    <Container maxWidth={"100%"} style={{ background: '#498000', margin: '5px 5px -25px 5px', borderRadius: '10px'}}>
+      <Flex
+        h={16}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+        flexDir={{
           base: "column",
           sm: "row"
-        }
-      }>
-      <Text
-        fontSize={{ base: "22", sm: "28" }}
-        fontWeight={"bold"}
-        textTransform={"uppercase"}
-        textAlign={"center"}
-        bgGradient={"linear(to-r, cyan.400,blue.500)"}
-        bgClip={"text"}
+        }}
       >
-        <Link to={"/"}> Farm-Flo <span style={{ color: 'green' }}>🍃</span></Link>
-      </Text>
-      <HStack spacing={2} alignItems={"center"}>
-        console.log(user.isAuthenticated)
-        {isAuthenticated && (
-          user?.accountType !== "seller" ? (
-            <Link to={"/cart"}>
-              <Button>
-                <FaCartPlus fontSize={20} />
-                <span style={{ position: "relative", top: "-10px" }}></span>
-              </Button>
-            </Link>
-          ) : (
-            <Link to={"/create"}>
-              <Button>
-                <PlusSquareIcon fontSize={20} />
-              </Button>
-            </Link>
-          )
-        )}
-        <Button onClick={toggleColorMode}>
-          {colorMode == "light" ? <IoMoon /> : <LuSun size="20" />}
-        </Button>
-        
-        <Button
-          ref={btnRef}
-          colorScheme="black"
-          onClick={onOpen} ml={10}
-          _hover={{ colorMode: "gray.200" }}
-          _active={{ bg: "none" }}
-          bg={"transparent"}
+        <Text
+          fontSize={{ base: "22", sm: "28" }}
+          fontWeight={"bold"}
+          textTransform={"uppercase"}
+          textAlign={"center"}
+          bgGradient={"linear(to-r, cyan.400,blue.500)"}
+          bgClip={"text"}
         >
-          <RiAccountCircleLine fontSize={38} color={colorMode === "dark" ? "white" : "black"} />
-        </Button>
-        <Text fontWeight={"bolder"}>{user?.name}</Text>
+          <Link to={"/home"}> Fresh-Hub <span style={{ color: 'green' }}>🍃</span></Link>
+        </Text>
+        <HStack spacing={2} alignItems={"center"}>
+          {/* Conditional buttons based on auth */}
+          {isAuthenticated && (
+            user?.accountType !== "seller" ? (
+              <>
+                <Link to={"/"}>
+                  <Button
+                    _hover={hoverStyles}
+                    transition="all 0.3s ease"
+                  >
+                    View Products
+                  </Button>
+                </Link>
 
-      </HStack>
-    </Flex>
-    <Drawer
-      isOpen={isOpen}
-      placement='right'
-      onClose={onClose}
-      finalFocusRef={btnRef}
-    >
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>
-          {user ? <>{user.name}</> : <>Login</>}
-        </DrawerHeader>
+                <Link to={"/cart"}>
+                  <Button
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
+                    _hover={hoverStyles}
+                    transition="all 0.3s ease"
+                  >
+                    <FaCartPlus fontSize={20} />
+                    <span style={{ position: "relative", top: "-2px" }}></span>
+                  </Button>
+                </Link>
 
-        <DrawerBody>
+                <Link to={"/pfeed"}>
+                  <Button
+                    _hover={hoverStyles}
+                    transition="all 0.3s ease"
+                  >
+                    Feedback
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to={"/"}>
+                  <Button
+                    _hover={hoverStyles}
+                    transition="all 0.3s ease"
+                  >
+                    View Products
+                  </Button>
+                </Link>
 
-        </DrawerBody>
+                <Link to={"/create"}>
+                  <Button
+                    _hover={hoverStyles}
+                    transition="all 0.3s ease"
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <PlusSquareIcon fontSize={20} />
+                  </Button>
+                </Link>
 
-        <DrawerFooter >
-          {isAuthenticated ? (
-            <Box >
-              <Button colorScheme="red" onClick={handleDelete} marginRight={10} >
-                Delete
-              </Button>
-
-              <Button colorScheme="red" onClick={handleLogout}>
-                Logout
-              </Button>
-            </Box>
-          ) : (
-            <>
-              <Link to={"/register"}>
-                <Button variant="outline" mr={3} onClick={onClose}>
-                  Register
-                </Button>
-              </Link>
-              <Link to={"/login"}>
-                <Button colorScheme="blue" onClick={onClose} className="bg-gradient-to-r from-green-500 to-emerald-600 text-white" >
-                  Login
-                </Button>
-              </Link>
-            </>
+                <Link to={"/feed"}>
+                  <Button
+                    _hover={hoverStyles}
+                    transition="all 0.3s ease"
+                  >
+                    Feedback
+                  </Button>
+                </Link>
+              </>
+            )
           )}
-        </DrawerFooter>
+          <Link to={"/contact"}>
+            <Button
+              _hover={hoverStyles}
+              transition="all 0.3s ease"
+            >
+              Contact US
+            </Button>
+          </Link>
+          
+           <Link to={"/pred"}>
+              <Button
+               _hover={hoverStyles}
+               transition="all 0.3s ease"
+              >
+                Prediction
+            </Button>
+          </Link>
+          <Link to={"/about"}>
+            <Button
+              _hover={hoverStyles}
+              transition="all 0.3s ease"
+            >
+              About US
+            </Button>
+          </Link>
+          <Link to={"/my-orders"}>
+            <Button
+              _hover={hoverStyles}
+              transition="all 0.3s ease"
+            >
+              My Orders
+            </Button>
+          </Link>
 
-      </DrawerContent>
 
-    </Drawer>
-  </Container>
+          <Button
+            onClick={toggleColorMode}
+            _hover={{
+              bg: colorMode === "light" ? "gray.300" : "gray.600",
+              transform: "scale(1.05)"
+            }}
+            transition="all 0.3s ease"
+          >
+            {colorMode === "light" ? <IoMoon /> : <LuSun size="20" />}
+          </Button>
 
-}
+          <Button
+            ref={btnRef}
+            colorScheme="black"
+            onClick={onOpen}
+            ml={10}
+            _hover={{ bg: "gray.700", color: "white", transform: "scale(1.05)" }}
+            _active={{ bg: "none" }}
+            bg={"transparent"}
+          >
+            <RiAccountCircleLine fontSize={38} color={colorMode === "dark" ? "white" : "black"} />
+          </Button>
+          <Text fontWeight={"bolder"}>{user?.name}</Text>
+        </HStack>
+      </Flex>
 
-export default NavBar
+      <Drawer
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>
+            {user ? <>{user.name}</> : <>Login</>}
+          </DrawerHeader>
+
+          <DrawerBody>
+            {/* Add content here if needed */}
+          </DrawerBody>
+
+          <DrawerFooter >
+            {isAuthenticated ? (
+              <Box>
+                <Button
+                  colorScheme="red"
+                  onClick={handleDelete}
+                  marginRight={10}
+                  _hover={{ bg: "red.600", transform: "scale(1.05)" }}
+                  transition="all 0.3s ease"
+                >
+                  Delete
+                </Button>
+
+                <Button
+                  colorScheme="red"
+                  onClick={handleLogout}
+                  _hover={{ bg: "red.600", transform: "scale(1.05)" }}
+                  transition="all 0.3s ease"
+                >
+                  Logout
+                </Button>
+              </Box>
+            ) : (
+              <>
+                <Link to={"/register"}>
+                  <Button
+                    variant="outline"
+                    mr={3}
+                    onClick={onClose}
+                    _hover={{ bg: "cyan.500", color: "white", transform: "scale(1.05)" }}
+                    transition="all 0.3s ease"
+                  >
+                    Register
+                  </Button>
+                </Link>
+
+                <Link to={"/login"}>
+                  <Button
+                    colorScheme="blue"
+                    onClick={onClose}
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+                    _hover={{ bg: "blue.600", transform: "scale(1.05)" }}
+                    transition="all 0.3s ease"
+                  >
+                    Login
+                  </Button>
+                </Link>
+              </>
+            )}
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </Container>
+  );
+};
+
+export default NavBar;

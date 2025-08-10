@@ -23,7 +23,9 @@
     "jsonwebtoken": "^9.0.2",
     "mailtrap": "^3.4.0",
     "mongoose": "^8.6.2",
+    "multer": "^2.0.2",
     "nodemailer": "^6.9.16",
+    "razorpay": "^2.9.6",
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {

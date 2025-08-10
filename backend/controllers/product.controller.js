@@ -72,4 +72,10 @@ export const deleteProduct = async (req, res) => {
     }
 }
 
+/*/payment
+export const processpayment = (req,res)=>{
+    res.status(200).json({
+        success:true
+    })
+}*/
 

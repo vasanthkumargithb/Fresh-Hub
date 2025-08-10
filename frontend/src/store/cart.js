@@ -1,16 +1,20 @@
 import {create} from 'zustand';
 import axios from 'axios';
 
-const API_URL = "http://localhost:5000/api/cart"; // Replace with your actual API URL
+const API_URL = "http://localhost:5000/api/cart";
 
- export const useCartStore = create((set) => ({
+// Configure axios to send cookies with all requests
+axios.defaults.withCredentials = true;
+
+export const useCartStore = create((set, get) => ({
   cart: [],
   error: null,
   isLoading: false,
 
   // Add item to the cart
-  addToCart: async (userId, productId, quantity, price,image) => {
+  addToCart: async (userId, productId, quantity, price, image) => {
     set({ isLoading: true, error: null });
+    console.log('🛒 Adding to cart:', { userId, productId, quantity, price });
 
     try {
       const response = await axios.post(`${API_URL}/add`, {
@@ -19,105 +23,160 @@ const API_URL = "http://localhost:5000/api/cart"; // Replace with your actual AP
         quantity,
         price,
         image
+      }, {
+        withCredentials: true
       });
-        // console.log("response",response.data.success)
+
+      console.log('✅ Add to cart response:', response.data);
+
       if (response.data.success) {
-        set((state) => ({
-          cart: [...state.cart, response.data.product], // Update the cart with new item
-          isLoading: false,
-        }));
+        // Refresh cart after adding
+        await get().getCart(userId);
+        set({ isLoading: false });
         return { success: true, message: "Product added to cart successfully!" };
       } else {
         set({ error: response.data.message, isLoading: false });
-        return { success: false, message: response.data.message}
+        return { success: false, message: response.data.message };
       }
     } catch (error) {
-      set({ error: error.response?.data?.message || "Failed to add to cart", isLoading: false });
-      return { success: false, message: error.response?.data?.message || "Failed to add"}
+      console.error('❌ Add to cart error:', error);
+      const errorMessage = error.response?.data?.message || "Failed to add to cart";
+      set({ error: errorMessage, isLoading: false });
+      return { success: false, message: errorMessage };
     }
   },
 
-  // Remove item from cart
-  removeFromCart: async ( userId,productId) => {
-
+  // Remove item from cart - FIXED: Using DELETE method
+  removeFromCart: async (userId, productId) => {
     set({ isLoading: true, error: null });
+    console.log('🗑️ Removing from cart:', { userId, productId });
+
     try {
-      const response = await axios.post(`${API_URL}/remove`, {
-        userId,
-        productId,
+      const response = await axios.delete(`${API_URL}/remove`, {
+        data: { userId, productId }, // Send data in request body for DELETE
+        withCredentials: true
       });
 
+      console.log('✅ Remove from cart response:', response.data);
+
       if (response.data.success) {
-        set((state) => ({
-          cart: state.cart.filter((item) => item.productId !== productId), // Remove the item from cart
-          isLoading: false,
-        }));
+        // Refresh cart after removing
+        await get().getCart(userId);
+        set({ isLoading: false });
         return { success: true, message: "Product removed from cart successfully!" };
       } else {
         set({ error: response.data.message, isLoading: false });
-        return { success: false, message: response.data.message }
+        return { success: false, message: response.data.message };
       }
     } catch (error) {
-      set({ error: error.response?.data?.message || "Failed to remove from cart", isLoading: false });
-      return { success: false, message: error.response?.data?.message || "Failed to remove"}
+      console.error('❌ Remove from cart error:', error);
+      const errorMessage = error.response?.data?.message || "Failed to remove from cart";
+      set({ error: errorMessage, isLoading: false });
+      return { success: false, message: errorMessage };
     }
   },
 
   // Update quantity of an item in cart
   updateQuantity: async (userId, productId, quantity) => {
     set({ isLoading: true, error: null });
+    console.log('🔄 Updating quantity:', { userId, productId, quantity });
+
     try {
-      const response = await axios.post(`${API_URL}/update`, {
+      const response = await axios.put(`${API_URL}/update`, {
         userId,
         productId,
         quantity,
+      }, {
+        withCredentials: true
       });
 
+      console.log('✅ Update quantity response:', response.data);
+
       if (response.data.success) {
-        set((state) => ({
-          cart: state.cart.map((item) =>
-            item.productId === productId ? { ...item, quantity } : item
-          ), // Update quantity of the item in cart
-          isLoading: false,
-        }));
+        // Refresh cart after updating
+        await get().getCart(userId);
+        set({ isLoading: false });
+        return { success: true, message: "Quantity updated successfully!" };
       } else {
         set({ error: response.data.message, isLoading: false });
+        return { success: false, message: response.data.message };
       }
     } catch (error) {
-      set({ error: error.response?.data?.message || "Failed to update quantity", isLoading: false });
+      console.error('❌ Update quantity error:', error);
+      const errorMessage = error.response?.data?.message || "Failed to update quantity";
+      set({ error: errorMessage, isLoading: false });
+      return { success: false, message: errorMessage };
     }
   },
 
-  // Get current cart
+  // Get current cart - FIXED: Using proper authentication
   getCart: async (userId) => {
     set({ isLoading: true, error: null });
+    console.log('📦 Fetching cart for userId:', userId);
+
     try {
-      const response = await axios.get(`${API_URL}`, { params: { userId } });
-      // console.log(response.data.success)
+      const response = await axios.get(`${API_URL}`, {
+        withCredentials: true
+      });
+
+      console.log('✅ Get cart response:', response.data);
+
       if (response.data.success) {
-        set({ cart: response.data.cart, isLoading: false });
+        set({ 
+          cart: response.data.cart || {}, 
+          isLoading: false,
+          error: null 
+        });
+        return { success: true };
       } else {
-        set({ error: response.data.message, isLoading: false });
+        set({ 
+          error: response.data.message, 
+          isLoading: false,
+          cart: {}
+        });
+        return { success: false, message: response.data.message };
       }
-      // console.log("first product",cart)
     } catch (error) {
-      set({ error: error.response?.data?.message || "Failed to fetch cart", isLoading: false });
+      console.error('❌ Get cart error:', error);
+      const errorMessage = error.response?.data?.message || "Failed to fetch cart";
+      set({ 
+        error: errorMessage, 
+        isLoading: false,
+        cart: {}
+      });
+      return { success: false, message: errorMessage };
     }
   },
 
-  // Clear the entire cart
+  // Clear the entire cart - FIXED: Using DELETE method
   clearCart: async (userId) => {
     set({ isLoading: true, error: null });
-    try {                                                                '     '
-      const response = await axios.post(`${API_URL}/clear`, { userId });
+    console.log('🧹 Clearing cart for userId:', userId);
+
+    try {
+      const response = await axios.delete(`${API_URL}/clear`, {
+        data: { userId }, // Send userId in request body for DELETE
+        withCredentials: true
+      });
+
+      console.log('✅ Clear cart response:', response.data);
 
       if (response.data.success) {
-        set({ cart: [], isLoading: false });
+        set({ 
+          cart: { items: [], subTotal: 0 }, 
+          isLoading: false,
+          error: null 
+        });
+        return { success: true, message: "Cart cleared successfully!" };
       } else {
         set({ error: response.data.message, isLoading: false });
+        return { success: false, message: response.data.message };
       }
     } catch (error) {
-      set({ error: error.response?.data?.message || "Failed to clear cart", isLoading: false });
+      console.error('❌ Clear cart error:', error);
+      const errorMessage = error.response?.data?.message || "Failed to clear cart";
+      set({ error: errorMessage, isLoading: false });
+      return { success: false, message: errorMessage };
     }
   },
 
@@ -125,4 +184,16 @@ const API_URL = "http://localhost:5000/api/cart"; // Replace with your actual AP
   checkCartError: () => {
     set({ error: null });
   },
+
+  // Helper function to get cart items count
+  getCartItemsCount: () => {
+    const { cart } = get();
+    return cart?.items?.length || 0;
+  },
+
+  // Helper function to get cart total
+  getCartTotal: () => {
+    const { cart } = get();
+    return cart?.subTotal || 0;
+  }
 }));
