@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import axios from 'axios';
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://fresh-hub-2.onrender.com/api/auth";
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create((set) => ({
