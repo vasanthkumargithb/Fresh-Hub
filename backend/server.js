@@ -26,8 +26,10 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5176",
-  "https://fresh-hub-3-frontend-14hu.onrender.com" // ✅ Render frontend domain
+  "https://fresh-hub-2.onrender.com", // ✅ add this
+  "https://fresh-hub-3-frontend-14hu.onrender.com"
 ];
+
 
 // ✅ CORS Configuration
 app.use(
