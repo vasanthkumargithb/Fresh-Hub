@@ -4,16 +4,12 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// Get all products
-router.get("/", verifyToken, getProduct);
+// ✅ Public route: Get all products (no token required)
+router.get("/", getProduct);
 
-// Create new product
+// ✅ Protected routes (require token)
 router.post("/", verifyToken, createProduct);
-
-// Update product by ID
 router.put("/:id", verifyToken, updateProduct);
-
-// Delete product by ID
 router.delete("/:id", verifyToken, deleteProduct);
 
 // Payment route (commented out)
