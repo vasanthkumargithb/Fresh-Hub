@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import axios from 'axios';
 
-const API_URL = "http://localhost:5000/api/cart";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/cart`;
 
 // Configure axios to send cookies with all requests
 axios.defaults.withCredentials = true;
