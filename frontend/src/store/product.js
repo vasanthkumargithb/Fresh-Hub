@@ -2,12 +2,9 @@ import { create } from "zustand";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api/products`;
 
-export const useProductStore = create((set, get) => ({
+export const useProductStore = create((set) => ({
   products: [],
   setProducts: (products) => set({ products }),
-
-  // ✅ Helper to get token
-  getToken: () => localStorage.getItem("token"),
 
   // ✅ Create new product
   createProduct: async (newProduct) => {
@@ -16,14 +13,10 @@ export const useProductStore = create((set, get) => ({
     }
 
     try {
-      const token = get().getToken();
-      if (!token) return { success: false, message: "Unauthorized: No token found" };
-
       const res = await fetch(`${API_URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // send token
         },
         body: JSON.stringify(newProduct),
       });
@@ -43,12 +36,7 @@ export const useProductStore = create((set, get) => ({
   // ✅ Fetch all products
   fetchProducts: async () => {
     try {
-      const token = get().getToken();
-      const res = await fetch(`${API_URL}`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
+      const res = await fetch(`${API_URL}`);
       const data = await res.json();
       set({ products: data.data || [] });
     } catch (error) {
@@ -59,12 +47,8 @@ export const useProductStore = create((set, get) => ({
   // ✅ Delete product
   deleteProducts: async (pid) => {
     try {
-      const token = get().getToken();
       const res = await fetch(`${API_URL}/${pid}`, {
         method: "DELETE",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
       });
 
       const data = await res.json();
@@ -83,12 +67,10 @@ export const useProductStore = create((set, get) => ({
   // ✅ Update product
   updateProducts: async (pid, updatedProduct) => {
     try {
-      const token = get().getToken();
       const res = await fetch(`${API_URL}/${pid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
         },
         body: JSON.stringify(updatedProduct),
       });
