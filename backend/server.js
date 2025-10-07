@@ -32,19 +32,21 @@ const allowedOrigins = [
 
 
 // ✅ CORS Configuration
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.warn("❌ Blocked by CORS:", origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // Allow cookies or authorization headers
-  })
-);
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         console.warn("❌ Blocked by CORS:", origin);
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true, // Allow cookies or authorization headers
+//   })
+// );
+app.use(cors({ origin: true, credentials: true }));
+
 
 // ✅ Increase payload size limits for large requests (images, etc.)
 app.use(express.json({ limit: "50mb" }));
