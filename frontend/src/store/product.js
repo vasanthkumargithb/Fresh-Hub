@@ -6,7 +6,7 @@ export const useProductStore = create((set) => ({
   products: [],
   setProducts: (products) => set({ products }),
 
-  // ✅ Create new product
+  // Create new product (still protected in backend)
   createProduct: async (newProduct) => {
     if (!newProduct.name || !newProduct.price || !newProduct.unit || !newProduct.image) {
       return { success: false, message: "Please provide full details of the product!" };
@@ -33,7 +33,7 @@ export const useProductStore = create((set) => ({
     }
   },
 
-  // ✅ Fetch all products
+  // Fetch all products (public, no token needed)
   fetchProducts: async () => {
     try {
       const res = await fetch(`${API_URL}`);
@@ -41,10 +41,11 @@ export const useProductStore = create((set) => ({
       set({ products: data.data || [] });
     } catch (error) {
       console.error("Error fetching products:", error);
+      set({ products: [] });
     }
   },
 
-  // ✅ Delete product
+  // Delete product
   deleteProducts: async (pid) => {
     try {
       const res = await fetch(`${API_URL}/${pid}`, {
@@ -64,7 +65,7 @@ export const useProductStore = create((set) => ({
     }
   },
 
-  // ✅ Update product
+  // Update product
   updateProducts: async (pid, updatedProduct) => {
     try {
       const res = await fetch(`${API_URL}/${pid}`, {
@@ -76,8 +77,7 @@ export const useProductStore = create((set) => ({
       });
 
       const data = await res.json();
-      if (!data.success)
-        return { success: false, message: "Error while updating the product details" };
+      if (!data.success) return { success: false, message: "Error updating product" };
 
       set((state) => ({
         products: state.products.map((product) =>
