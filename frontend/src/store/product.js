@@ -1,11 +1,13 @@
 import { create } from "zustand";
 
-// ✅ Use your backend base URL from .env
 const API_URL = `${import.meta.env.VITE_API_URL}/api/products`;
 
-export const useProductStore = create((set) => ({
+export const useProductStore = create((set, get) => ({
   products: [],
   setProducts: (products) => set({ products }),
+
+  // ✅ Helper to get token
+  getToken: () => localStorage.getItem("token"),
 
   // ✅ Create new product
   createProduct: async (newProduct) => {
@@ -14,19 +16,23 @@ export const useProductStore = create((set) => ({
     }
 
     try {
+      const token = get().getToken();
+      if (!token) return { success: false, message: "Unauthorized: No token found" };
+
       const res = await fetch(`${API_URL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // send token
         },
         body: JSON.stringify(newProduct),
       });
 
-      if (!res.ok) {
-        return { success: false, message: `Failed to create product. Status: ${res.status}` };
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        return { success: false, message: data.message || "Failed to create product" };
       }
 
-      const data = await res.json();
       set((state) => ({ products: [...state.products, data.data] }));
       return { success: true, message: "Product created successfully!" };
     } catch (error) {
@@ -37,7 +43,12 @@ export const useProductStore = create((set) => ({
   // ✅ Fetch all products
   fetchProducts: async () => {
     try {
-      const res = await fetch(`${API_URL}`);
+      const token = get().getToken();
+      const res = await fetch(`${API_URL}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
       const data = await res.json();
       set({ products: data.data || [] });
     } catch (error) {
@@ -48,8 +59,12 @@ export const useProductStore = create((set) => ({
   // ✅ Delete product
   deleteProducts: async (pid) => {
     try {
+      const token = get().getToken();
       const res = await fetch(`${API_URL}/${pid}`, {
         method: "DELETE",
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       });
 
       const data = await res.json();
@@ -68,10 +83,12 @@ export const useProductStore = create((set) => ({
   // ✅ Update product
   updateProducts: async (pid, updatedProduct) => {
     try {
+      const token = get().getToken();
       const res = await fetch(`${API_URL}/${pid}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
         },
         body: JSON.stringify(updatedProduct),
       });
