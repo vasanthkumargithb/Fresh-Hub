@@ -24,4 +24,4 @@ router.delete('/clear', verifyToken, clearCart);
 // Cleanup cart (remove invalid items) - NEW ROUTE
 router.post('/cleanup', verifyToken, cleanupCart);
 
-export default router;
+export default router; 
