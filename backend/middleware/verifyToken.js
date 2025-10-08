@@ -38,4 +38,4 @@ export const verifyToken = (req, res, next) => {
             message: "Server error" 
         });
     }
-};
+}; 
