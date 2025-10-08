@@ -68,4 +68,4 @@ export default EmailVerificationPage
 </div> */}
 
 
-// style={{height:"100vh",width:"100%",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}}
+// style={{height:"100vh",width:"100%",display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column"}} 
