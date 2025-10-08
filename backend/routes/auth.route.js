@@ -23,3 +23,4 @@ router.post("/reset-password/:token", resetPassword);
 router.delete("/user/delete", deleteUser);
 
 export default router;
+ 
