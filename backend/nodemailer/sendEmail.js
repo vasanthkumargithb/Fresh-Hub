@@ -74,3 +74,4 @@ export const sendDeleteEmail = async (email, userName) => {
     const text = `Dear ${userName}, your account has been deleted.`;
     await sendMail(email, subject, text, html);
 };
+ 
