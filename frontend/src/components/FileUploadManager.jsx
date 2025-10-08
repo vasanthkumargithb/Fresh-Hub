@@ -287,4 +287,4 @@ const FileUploadManager = ({ onImagesSelect, maxFiles = 5, maxFileSize = 5 * 102
   );
 };
 
-export default FileUploadManager;
+export default FileUploadManager; 
