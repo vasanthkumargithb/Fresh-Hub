@@ -29,3 +29,4 @@ const paymentRecordSchema = new mongoose.Schema({
 const PaymentRecord = mongoose.model("PaymentRecord", paymentRecordSchema);
 
 export default PaymentRecord;
+ 
