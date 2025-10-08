@@ -6,7 +6,7 @@ export const useProductStore = create((set) => ({
   products: [],
   setProducts: (products) => set({ products }),
 
-  // Create new product (still protected in backend)
+  // Create new product
   createProduct: async (newProduct) => {
     if (!newProduct.name || !newProduct.price || !newProduct.unit || !newProduct.image) {
       return { success: false, message: "Please provide full details of the product!" };
@@ -18,6 +18,7 @@ export const useProductStore = create((set) => ({
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include', // ✅ Added
         body: JSON.stringify(newProduct),
       });
 
@@ -50,6 +51,7 @@ export const useProductStore = create((set) => ({
     try {
       const res = await fetch(`${API_URL}/${pid}`, {
         method: "DELETE",
+        credentials: 'include', // ✅ Added - THIS WAS MISSING!
       });
 
       const data = await res.json();
@@ -73,6 +75,7 @@ export const useProductStore = create((set) => ({
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include', // ✅ Added
         body: JSON.stringify(updatedProduct),
       });
 
@@ -82,7 +85,7 @@ export const useProductStore = create((set) => ({
       set((state) => ({
         products: state.products.map((product) =>
           product._id === pid ? data.data : product
-        ),
+        ), 
       }));
 
       return { success: true, message: "Successfully updated!" };
@@ -90,4 +93,4 @@ export const useProductStore = create((set) => ({
       return { success: false, message: "Network or server error while updating product." };
     }
   },
-}));
+})); 
