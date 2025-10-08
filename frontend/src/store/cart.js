@@ -166,3 +166,4 @@ export const useCartStore = create((set, get) => ({
     return cart?.subTotal || 0;
   }
 }));
+ 
